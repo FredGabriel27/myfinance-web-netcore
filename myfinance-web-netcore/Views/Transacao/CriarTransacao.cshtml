@@ -1,0 +1,90 @@
+﻿@using System.Globalization
+@model TransacaoModel
+@{
+    ViewData["Title"] = "Registro de Transação Financeira";
+
+    int vId = 0;
+    var vData = string.Empty;
+    var vValor = string.Empty;
+    var vHistorico = string.Empty;
+    var vTipo = string.Empty;
+    var vPlanoContaId = 0;
+
+    try
+    {
+        vId = int.Parse(@ViewBag.Transacao.Id.ToString());
+        vData = @ViewBag.Transacao.Data.ToString("yyyy-MM-dd");
+        vPlanoContaId = int.Parse(@ViewBag.Transacao.IdPlanoConta.ToString());
+        vTipo = @ViewBag.Transacao.Tipo.ToString();
+        vHistorico = @ViewBag.Transacao.Historico.ToString();
+
+        CultureInfo cultureInfo = CultureInfo.InvariantCulture;
+        vValor = @ViewBag.Transacao.Valor.ToString(cultureInfo);
+    }
+    catch { }
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form asp-controller="Transacao" asp-action="CriarTransacao">
+    <input type="hidden" asp-for="Id" readonly /><br />
+
+    <div class="row form-group mb-3">
+        <div class="col-lg-3">
+            <label>Data:</label>
+            <input type="date" class="form-control" asp-for="Data" value=@vData />
+            <span asp-validation-for="Data" class="text-danger"></span>
+        </div>
+
+        <div class="col-lg-3">
+            <label>Tipo:</label>
+            <input type="text" class="form-control" asp-for="Tipo" value=@vTipo />
+        </div>
+
+        <div class="col-lg-3">
+            <label>Valor:</label>
+            <input type="text" class="form-control" asp-for="Valor" step="0.01" value=@vValor />
+            <span asp-validation-for="Valor" class="text-danger"></span>
+        </div>
+
+        <div class="col-lg-3">
+            <label>Plano de Contas:</label>
+            <select asp-for=IdPlanoConta class="form-control">
+                <option value="0">Selecionar</option>
+                @{
+                    foreach (var item in ViewBag.ListaPlanoContas)
+                    {
+                        if (item.Id.ToString() == vPlanoContaId.ToString())
+                        {
+                            <option selected value="@item.Id">@item.Descricao</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Id">@item.Descricao</option>
+                        }
+                    }
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group mb-3">
+        <label>Histórico:</label>
+        @Html.TextArea("Historico", vHistorico, new {@class="form-control"})
+        <span asp-validation-for="Historico" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+    </div>
+
+    <div>
+        <button type="submit" class="btn btn-block btn-success">Salvar</button>
+        <input type="button" class="btn btn-block btn-danger" onclick="Cancelar()" value="Cancelar" />
+    </div>
+</form>
+
+<script>
+    function Cancelar(){
+        window.location.href = "/Transacao";
+    }
+</script>

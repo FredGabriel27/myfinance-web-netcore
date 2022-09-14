@@ -2,34 +2,78 @@
     ViewData["Title"] = "Plano Contas";
 }
 
-<h3>Plano de Contas</h3>
-<hr>
 
-<button type="button" class="btn btn-block btn-primary" onclick="CriarPlanoConta()">Criar Plano de Conta </button>
+<h3>Lista de Plano de Contas</h3>
+<hr />
+
+<div class="mb-3">
+    <button type="button" class="btn btn-block btn-primary" onclick="CriarPlanoConta()">Criar Plano de Conta</button>
+</div>
 
 <table class="table table-bordered">
-  <tr>
-    <th>Id</th>
-    <th>Descrição</th>
-    <th>Tipo</th>
-  </tr>
-
+    <tr>
+        <th width="10%">ID</th>
+        <th>Descrição</th>
+        <th width="10%">Tipo</th>
+        <th width="30%">Opções</th>
+    </tr>
     @{
-        foreach(var item in (List<PlanoContaModel>)ViewBag.Lista)
+        foreach (var item in (List<PlanoContaModel>)ViewBag.Lista)
         {
             <tr>
-            <td>@item.Id</td>
-            <td>@item.Descricao</td>
-            <td>@item.Tipo</td>
+                <td>@item.Id</td>
+                <td>@item.Descricao</td>
+                <td>@item.Tipo</td>
+                <td>
+                    <button type="button" onclick="ExcluirPlanoConta(@item.Id.ToString())" class="btn btn-block btn-danger"><i class="bi bi-trash3"></i> Excluir</button>
+                    <button type="button" onclick="EditarPlanoConta(@item.Id.ToString())" class="btn btn-block btn-warning"><i class="bi bi-pencil"></i> Editar</button>
+                </td>
             </tr>
-
         }
     }
 </table>
 
+<div id="Deletemodal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Modal Header</h4>
+            </div>
+            <div class="modal-body">
+                @*modal body here*@
+                <h1>Confirma a Exclusão?</h1>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script>
-    function CriarPlanoConta()
-    {
+    function CriarPlanoConta(){
         window.location.href = "../PlanoConta/CriarPlanoConta";
+    }
+
+    function ExcluirPlanoConta(id){
+        swal({
+          title: "Atenção!",
+          text: "Confirma a Exclusão?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+          closeOnClickOutside: false,
+          buttons: ["Cancelar", "Excluir"],
+        }).then((excluir) => {
+          if (excluir) {
+            window.location.href = "../PlanoConta/ExcluirPlanoConta/" + id;
+          }
+        });
+    }
+
+    function EditarPlanoConta(id){
+        window.location.href = "../PlanoConta/CriarPlanoConta/" + id;
     }
 </script>

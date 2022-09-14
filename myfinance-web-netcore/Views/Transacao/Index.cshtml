@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Transações";
+}
+
+
+<h3>Lista de Transações Financeiras</h3>
+<hr />
+
+<div class="mb-3">
+    <button type="button" class="btn btn-block btn-primary" onclick="CriarTransacao()">Registrar Transação</button>
+</div>
+
+<table class="table table-bordered">
+    <tr>
+        <th>ID</th>
+        <th width="17%">Data</th>
+        <th>Valor</th>
+        <th>Tipo</th>
+        <th>Historico</th>
+        <th>Plano de Contas</th>
+        <th width="20%">Opções</th>
+    </tr>
+    @{
+        foreach (var item in (List<TransacaoModel>)ViewBag.Lista)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Data</td>
+                <td>@item.Valor</td>
+                <td>@item.Tipo</td>
+                <td>@item.Historico</td>
+                <td>@item.IdPlanoConta</td>
+                <td>
+                    <button type="button" onclick="ExcluirTransacao(@item.Id.ToString())" class="btn btn-block btn-danger"><i class="bi bi-trash3"></i> Excluir</button>
+                    <button type="button" onclick="EditarTransacao(@item.Id.ToString())" class="btn btn-block btn-warning"><i class="bi bi-pencil"></i> Editar</button>
+                </td>
+            </tr>
+        }
+    }
+</table>
+
+<script>
+    function CriarTransacao(){
+        window.location.href = "../Transacao/CriarTransacao";
+    }
+
+    function ExcluirTransacao(id){
+        swal({
+          title: "Atenção!",
+          text: "Confirma a Exclusão?",
+          icon: "warning",
+          buttons: true,
+          dangerMode: true,
+          closeOnClickOutside: false,
+          buttons: ["Cancelar", "Excluir"],
+        }).then((excluir) => {
+          if (excluir) {
+            window.location.href = "../Transacao/ExcluirTransacao/" + id;
+          }
+        });
+    }
+
+    function EditarTransacao(id){
+        window.location.href = "../Transacao/CriarTransacao/" + id;
+    }
+</script>

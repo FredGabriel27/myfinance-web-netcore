@@ -20,21 +20,42 @@ namespace myfinance_web_netcore.Controllers
 
         public IActionResult Index()
         {
-            var planoContaModel = new PlanoContaModel();
-            ViewBag.Lista = planoContaModel.ListaPlanoContas();
+            var planoContasModel = new PlanoContaModel();
+            ViewBag.Lista = planoContasModel.ListaPlanoContas();
+
             return View();
         }
 
         [HttpGet]
-        public IActionResult CriarPlanoConta()
+        public IActionResult CriarPlanoConta(int? id)
         {
+            if (id != null)
+            {
+                var planoContas = new PlanoContaModel().CarregarPlanoContaPorId(id);
+                ViewBag.PlanoConta = planoContas;
+            }
+            
             return View();
         }
 
         [HttpPost]
         public IActionResult CriarPlanoConta(PlanoContaModel formulario)
         {
-            formulario.Inserir();
+            if (formulario.Id == 0)
+            {
+                formulario.Inserir();
+            }
+            else
+            {
+                formulario.Editar(formulario.Id);
+            }
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public IActionResult ExcluirPlanoConta(int id)
+        {
+            new PlanoContaModel().Excluir(id);
             return RedirectToAction("Index");
         }
     }
