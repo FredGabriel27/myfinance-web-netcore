@@ -59,6 +59,21 @@ insert into transacao(data, valor,tipo,historico,id_plano_conta) values(GETDATE(
 
 <hr />
 
+## Execução do projeto
+
+Na sequencia temos o passo a passo para implementar o projeto:
+
+➔ Clonar o projeto no git.
+➔ Executar no script no banco de dados, lembrando de alterar para o database criado na hora de inserir as tabelas.
+➔ Abrir a pasta do projeto no Visual Studio Code.
+➔ No terminal do Visual Studio Code, executar os comandos apropriados para fazer o build ou rodar o projeto no terminal. 
+➔ Comando cd CaminhoParaaPastaDoProjeto
+➔ Comando dotnet build
+➔ Comando dotnet run
+
+
+<hr />
+
 
 
 
